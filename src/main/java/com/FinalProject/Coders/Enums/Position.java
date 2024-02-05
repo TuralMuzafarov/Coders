@@ -1,0 +1,31 @@
+package com.FinalProject.Coders.Enums;
+
+public enum Position {
+    Anesthesiologist,
+    Cardiologist,
+    Dermatologist,
+    Endocrinologist,
+    Family_physician,
+    Gastroenterologist,
+    Geneticist,
+    Hematologist,
+    Internal_Medicine,
+    Nephrologist,
+    Neurologist,
+    Gynecologist,
+    Oncologist,
+    Ophthalmologist,
+    Orthopedist,
+    Otolaryngologist,
+    Osteopath,
+    Pathologist,
+    Pediatrician,
+    Physician_executive,
+    Plastic_surgeon,
+    Podiatrist,
+    Psychiatrist,
+    Pulmonologist,
+    Radiologist,
+    Rheumatologist,
+    Urologist;
+}
