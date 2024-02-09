@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface AttachmentRepo extends JpaRepository<Attachment , Long> {
     @Query("UPDATE Attachment a SET a.photo = :photo WHERE a.Id = :id")
     void updateAttachmentById(@Param("id") Long id , @Param("photo") byte[] photo);
+
+    Optional<Attachment> findAttachmentByFilename(String fileName);
 }

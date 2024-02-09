@@ -18,7 +18,6 @@ import java.util.*;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @ToString
 public class UserEntity implements UserDetails , DTO {
     @Id
@@ -62,6 +61,33 @@ public class UserEntity implements UserDetails , DTO {
 
     @OneToMany(mappedBy = "user" , fetch = FetchType.EAGER)
     private Set<Appointment> appointments;
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "meals_eaten",
+            joinColumns = @JoinColumn(name = "meal_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<Meal> eatenMeals = new ArrayList<>();
+
+    private Integer breakfastKcal = 0;
+
+    private Integer dinnerKcal = 0;
+
+    private Integer lunchKcal = 0;
+    private Integer totalProtein = 0;
+    private Integer totalCarbs = 0;
+    private Integer totalFat = 0;
+
+    public UserEntity() {
+        this.setBreakfastKcal(0);
+        this.setLunchKcal(0);
+        this.setDinnerKcal(0);
+        this.totalFat = 0;
+        this.totalCarbs = 0;
+        this.totalProtein = 0;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

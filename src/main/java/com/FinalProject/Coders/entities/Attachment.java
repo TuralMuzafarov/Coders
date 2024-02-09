@@ -18,6 +18,8 @@ public class Attachment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long Id;
+    private String filePath;
+    @Column(unique = true)
     private String filename;
     private String contentType;
 
