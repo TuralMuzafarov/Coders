@@ -120,4 +120,21 @@ public class MealService {
             return DTO;
         }
     }
+
+
+    public GeneralDTO getEatenMealsByCategory(MealCategory category , UserEntity user)
+    {
+        GeneralDTO DTO = new GeneralDTO();
+        try {
+            List<Meal> meals = user.getEatenMeals().stream().filter(meal -> meal.getCategory()==category).toList();
+            DTO.setDTO(meals);
+            DTO.setStatusCode(HttpStatus.ACCEPTED);
+            return DTO;
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            DTO.setStatusCode(HttpStatus.BAD_REQUEST);
+            return DTO;
+        }
+    }
 }

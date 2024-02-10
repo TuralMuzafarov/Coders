@@ -28,4 +28,7 @@ public class Appointment {
 
     @Column(name = "appointment_time", nullable = false)
     private LocalDateTime appointmentTime;
+
+    @OneToOne(mappedBy = "appointment" , cascade = CascadeType.ALL)
+    private Treatment treatment;
 }

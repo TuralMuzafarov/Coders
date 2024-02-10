@@ -69,6 +69,8 @@ public class UserEntity implements UserDetails , DTO {
             joinColumns = @JoinColumn(name = "meal_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
+
+
     private List<Meal> eatenMeals = new ArrayList<>();
 
     private Integer breakfastKcal = 0;

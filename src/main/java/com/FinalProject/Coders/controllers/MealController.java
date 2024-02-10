@@ -1,5 +1,6 @@
 package com.FinalProject.Coders.controllers;
 
+import com.FinalProject.Coders.DTOs.DTO;
 import com.FinalProject.Coders.DTOs.GeneralDTO;
 import com.FinalProject.Coders.DTOs.PaginationRequestDTO;
 import com.FinalProject.Coders.DTOs.addMealDTO;
@@ -73,6 +74,23 @@ public class MealController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(DTO);
         }
         return ResponseEntity.ok().body(DTO);
+    }
+
+    @GetMapping("/getEaten/{category}")
+    public ResponseEntity<GeneralDTO> getEatenByCategory(@PathVariable MealCategory category)
+    {
+        UserEntity user = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        GeneralDTO dto = mealService.getEatenMealsByCategory(category , user);
+        if(user == null)
+        {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(dto);
+        }
+        if(dto.getStatusCode() == HttpStatus.BAD_REQUEST)
+        {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(dto);
+        }
+        return ResponseEntity.ok().body(dto);
+
     }
 }
 

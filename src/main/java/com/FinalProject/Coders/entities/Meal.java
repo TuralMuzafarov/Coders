@@ -26,7 +26,7 @@ public class Meal {
     private Integer carbs;
     private Integer fat;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "attachment_id" , referencedColumnName = "id")
     private Attachment attachment;
 

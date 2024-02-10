@@ -7,6 +7,7 @@ import com.FinalProject.Coders.entities.Attachment;
 import com.FinalProject.Coders.entities.Meal;
 import com.FinalProject.Coders.entities.UserEntity;
 import com.FinalProject.Coders.repositories.AttachmentRepo;
+import com.FinalProject.Coders.repositories.MealRepo;
 import com.FinalProject.Coders.repositories.UserRepo;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -36,6 +37,7 @@ import java.util.Objects;
 public class AttachmentService {
     private final UserRepo userRepo;
     private final AttachmentRepo attachmentRepo;
+    private final MealRepo mealRepo;
 
     @Transactional()
     public GeneralDTO uploadImage(MultipartFile file , UserEntity user){
@@ -110,6 +112,7 @@ public class AttachmentService {
             if (fileName.contains(".")) {
                 fileName =  StringUtils.stripFilenameExtension(fileName);
             }
+            Meal meal = mealRepo.findMealByMealName(fileName).orElseThrow(NullPointerException::new);
             String contentType = file.getContentType();
             String filePath = uploadDir + File.separator + originalFileName;
 
@@ -122,9 +125,16 @@ public class AttachmentService {
             file.transferTo(dest);
 
             attachmentRepo.save(attachment);
+            meal.setAttachment(attachment);
+            mealRepo.save(meal);
             DTO.setStatusCode(HttpStatus.ACCEPTED);
             return DTO;
         } catch (IOException e) {
+            e.printStackTrace();
+            DTO.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
+            return DTO;
+        }catch (NullPointerException e)
+        {
             e.printStackTrace();
             DTO.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
             return DTO;
