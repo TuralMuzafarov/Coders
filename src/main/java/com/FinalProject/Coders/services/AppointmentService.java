@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -32,7 +33,7 @@ public class AppointmentService {
     private final DoctorInfoRepo doctorInfoRepo;
     private final DoctorAvailabilityRepo doctorAvailabilityRepo;
     private final DoctorAvailabilityService doctorAvailabilityService;
-
+    private final AttachmentService attachmentService;
 
     @Transactional
     public GeneralDTO registerAppointment(AppointmentRegisterDTO req , UserEntity user1)
@@ -137,7 +138,7 @@ public class AppointmentService {
                     }
             ).toList();
 
-            Page<LastExaminationDTO> page = createPage(examinationDTOS , pageReq.getPageSize() , pageable);
+            Page<LastExaminationDTO> page = AppointmentService.createPage(examinationDTOS , pageReq.getPageSize() , pageable);
             DTO.setDTO(new PageImpl<>(examinationDTOS, pageable, page.getTotalElements()));
             DTO.setStatusCode(HttpStatus.ACCEPTED);
             return DTO;
@@ -162,4 +163,41 @@ public class AppointmentService {
     }
 
 
+    public GeneralDTO getTreatments(PaginationRequestDTO pageReq , UserEntity user) {
+        GeneralDTO DTO = new GeneralDTO();
+        Pageable pageable = pageReq.getPageable(pageReq);
+        try {
+            UserEntity currentUser = userRepo.findById(user.getId()).orElseThrow(EntityNotFoundException::new);
+
+            List<GetTreatmentsDTO> treatmentsDTOS = currentUser.getAppointments().stream().map(
+                    (appointment)->{
+                        GetTreatmentsDTO getTreatmentsDTO = GetTreatmentsDTO.builder()
+                                .hospital(appointment.getDoctor().getHospital())
+                                .appointmentTime(appointment.getAppointmentTime().toString())
+                                .appointmentDate(appointment.getAppointmentTime().toLocalDate().toString())
+                                .doctorSpeciality(appointment.getDoctor().getSpeciality())
+                                .diagnose(appointment.getTreatment().getDiagnose())
+                                .build();
+
+                        if(appointment.getDoctor().getUser().getAttachment()!=null)
+                        {
+                            getTreatmentsDTO.setDoctorPhoto(attachmentService.getPhoto(appointment.getDoctor().getUser().getAttachment().getPhoto()));
+                        }
+                        return getTreatmentsDTO;
+                    }
+            ).toList();
+            Page<GetTreatmentsDTO> page = AppointmentService.createPage(treatmentsDTOS , pageReq.getPageSize() , pageable);
+
+            DTO.setStatusCode(HttpStatus.ACCEPTED);
+            DTO.setDTO(new PageImpl<>(treatmentsDTOS, pageable, page.getTotalElements()));
+            return DTO;
+        }catch (EntityNotFoundException e)
+        {
+            e.printStackTrace();
+            DTO.setStatusCode(HttpStatus.BAD_REQUEST);
+            return DTO;
+        }
+
+
+    }
 }

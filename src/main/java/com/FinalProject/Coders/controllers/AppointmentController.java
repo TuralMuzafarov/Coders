@@ -58,7 +58,23 @@ public class AppointmentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(DTO);
         }
         return ResponseEntity.ok().body(DTO);
+    }
 
+    @GetMapping(value = "/getTreatments")
+    public ResponseEntity<GeneralDTO> getTreatments(@RequestBody PaginationRequestDTO pageReq)
+    {
+        UserEntity user = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(user==null)
+        {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new GeneralDTO());
+        }
+
+        GeneralDTO DTO = appointmentService.getTreatments(pageReq , user);
+        if(DTO.getStatusCode() == HttpStatus.BAD_REQUEST)
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(DTO);
+        }
+        return ResponseEntity.ok().body(DTO);
     }
 
 }
