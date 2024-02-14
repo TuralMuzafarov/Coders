@@ -2,6 +2,8 @@ package com.FinalProject.Coders.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.mapping.Map;
 
 import java.time.LocalDate;
@@ -26,6 +28,7 @@ public class DoctorAvailability {
 
     @ElementCollection(targetClass = Boolean.class)
     @CollectionTable(name = "doctor_available_hours" , joinColumns = @JoinColumn(name = "doctor_id"))
+    @Fetch(FetchMode.JOIN)
     private List<Boolean> availableHours = List.of(false , false , false , false , false , false);
 
     @ManyToOne

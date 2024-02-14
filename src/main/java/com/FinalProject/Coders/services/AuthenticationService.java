@@ -89,8 +89,8 @@ public class AuthenticationService {
                     orElseThrow(()->new UsernameNotFoundException("user not found"));
 
             DoctorInfo doctorInfo = DoctorInfo.builder()
-                    .name(DTO.getName())
-                    .surname(DTO.getSurname())
+                    .name(user.getFirstName())
+                    .surname(user.getLastName())
                     .hospital(DTO.getHospital())
                     .speciality(DTO.getSpeciality())
                     .workingDays(DTO.getAvailableDays())

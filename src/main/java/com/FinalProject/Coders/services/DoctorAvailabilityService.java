@@ -7,6 +7,7 @@ import com.FinalProject.Coders.repositories.DoctorInfoRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -58,7 +59,22 @@ public class DoctorAvailabilityService {
             return vacantTimesString;
         }
         else{
-            return Collections.emptyList();
+            doctorAvailability = new DoctorAvailability();
+            doctorAvailability.setDate(selectedDate);
+            doctorAvailability.setDoctor_id(doctorInfo);
+            Set<DoctorAvailability> doctorAvailabilities =  doctorInfo.getDoctorAvailabilities();
+            doctorAvailabilities.add(doctorAvailability);
+            doctorInfo.setDoctorAvailabilities(doctorAvailabilities);
+            doctorAvailabilityRepo.save(doctorAvailability);
+            doctorInfoRepo.save(doctorInfo);
+
+            List<Boolean> availableHours = doctorAvailability.getAvailableHours();
+
+            List<LocalTime> vacantTimes = calculateAvailableTimes(availableHours);
+
+            List<String> vacantTimesString = vacantTimes.stream().map(Objects::toString).toList();
+
+            return vacantTimesString;
         }
 
     }

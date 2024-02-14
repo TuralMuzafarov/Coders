@@ -34,6 +34,7 @@ public class AppointmentService {
     private final DoctorAvailabilityRepo doctorAvailabilityRepo;
     private final DoctorAvailabilityService doctorAvailabilityService;
     private final AttachmentService attachmentService;
+    private final TreatmentRepo treatmentRepo;
 
     @Transactional
     public GeneralDTO registerAppointment(AppointmentRegisterDTO req , UserEntity user1)
@@ -95,6 +96,8 @@ public class AppointmentService {
                     .build();
 
             appointment.setTreatment(treatment);
+            treatment.setAppointment(appointment);
+
 
             List<Medicine> medicineList = req.getMedicineList().stream().map(medDto->
             {

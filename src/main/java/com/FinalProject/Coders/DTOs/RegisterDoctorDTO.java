@@ -12,8 +12,6 @@ import java.util.Set;
 @Setter
 @ToString
 public class RegisterDoctorDTO {
-    private String name;
-    private String surname;
     private String email;
     private String hospital;
     private String speciality;

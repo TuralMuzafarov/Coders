@@ -56,7 +56,7 @@ public class AttachmentService {
         }
 
         try {
-            String uploadDir = "C:\\Users\\Tural\\Desktop\\Coders\\src\\main\\java\\com\\FinalProject\\Coders\\attachments\\profilePhotos";
+            String uploadDir = "C:\\Users\\Tural\\Desktop\\CodersProject\\Coders\\src\\main\\java\\com\\FinalProject\\Coders\\attachments\\profilePhotos";
             // Create the directory if it doesn't exist
             File dir = new File(uploadDir);
             if (!dir.exists()) {
@@ -64,9 +64,11 @@ public class AttachmentService {
             }
 
             String fileName = file.getOriginalFilename();
+
             assert fileName != null;
+            String filenameWithoutExtension = file.getOriginalFilename();
             if (fileName.contains(".")) {
-                fileName =  StringUtils.stripFilenameExtension(fileName);
+                filenameWithoutExtension =  StringUtils.stripFilenameExtension(fileName);
             }
             String contentType = file.getContentType();
             String filePath = uploadDir + File.separator + fileName;
@@ -75,13 +77,12 @@ public class AttachmentService {
 
             attachment.setPhoto(filePath);
             attachment.setContentType(contentType);
-            attachment.setFilename(fileName);
+            attachment.setFilename(filenameWithoutExtension);
 
             File dest = new File(filePath);
             file.transferTo(dest);
-
+            attachment.setUser(user);
             attachmentRepo.save(attachment);
-            user.setAttachment(attachment);
             userRepo.save(user);
             DTO.setStatusCode(HttpStatus.ACCEPTED);
             return DTO;

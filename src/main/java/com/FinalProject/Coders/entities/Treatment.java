@@ -22,8 +22,7 @@ public class Treatment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "appointment_id" , referencedColumnName = "id")
+    @OneToOne(mappedBy = "treatment" , cascade = CascadeType.ALL)
     private  Appointment appointment;
 
     @OneToMany(mappedBy = "treatment" , cascade = CascadeType.ALL)
@@ -36,9 +35,9 @@ public class Treatment {
     @Enumerated(EnumType.STRING)
     private ExaminationStatus status;
 
-    @CreationTimestamp
-    private Timestamp createdAt;
-
-    @UpdateTimestamp
-    private Timestamp updatedAt;
+//    @CreationTimestamp
+//    private Timestamp createdAt;
+//
+//    @UpdateTimestamp
+//    private Timestamp updatedAt;
 }

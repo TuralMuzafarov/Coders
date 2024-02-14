@@ -14,5 +14,4 @@ public class MedicineDTO {
     private List<String> takenDays;
     private String postScript;
 
-    // Getters and setters
 }
