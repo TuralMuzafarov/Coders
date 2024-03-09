@@ -7,4 +7,6 @@ import org.springframework.http.HttpStatus;
 public class GeneralDTO implements DTO{
     private HttpStatus StatusCode;
     private Object DTO;
+
+
 }

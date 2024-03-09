@@ -1,5 +1,6 @@
 package com.FinalProject.Coders.services;
 
+import ch.qos.logback.core.net.ObjectWriter;
 import com.FinalProject.Coders.DTOs.GeneralDTO;
 import com.FinalProject.Coders.DTOs.DashboardUserDetailsDTO;
 import com.FinalProject.Coders.entities.UserEntity;
@@ -11,6 +12,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,6 +24,7 @@ public class DashboardService {
     private final AttachmentRepo attachmentRepo;
     private final PatientRepo patientRepo;
     private final AttachmentService attachmentService;
+
     @Transactional
     public GeneralDTO gettingUserDetails(UserEntity user) {
         String photo;

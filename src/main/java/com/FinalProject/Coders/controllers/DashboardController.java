@@ -6,11 +6,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.FinalProject.Coders.services.DashboardService;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/dashboard")
 @RequiredArgsConstructor
@@ -23,7 +25,7 @@ public class DashboardController {
         UserEntity user =(UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         try {
             GeneralDTO DTO = dashboardService.gettingUserDetails(user);
-            return ResponseEntity.ok().body(DTO);
+            return ResponseEntity.ok(DTO);
         }catch (Exception e)
         {
             GeneralDTO DTO = new GeneralDTO();
